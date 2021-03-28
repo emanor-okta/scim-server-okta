@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -182,8 +183,16 @@ public class ScimGroupController extends ScimBaseController {
         scimService.updateGroupByPatchOp(group, scimGroupPatchOp);
         //Save the updated value to DB
         groupRepository.save(group);
-        //Return the updated group information and convert it to a SCIM Group
+        //
+        // Return the updated group information and convert it to a SCIM Group
+
+
+//        try {
+//            Thread.sleep(1000 * 90);
+//        } catch (InterruptedException ie) {ie.printStackTrace();}
+
         return scimService.groupToScimGroup(group);
+
     }
 
     /**

@@ -1,8 +1,8 @@
 # Testing Credentials
-security:
-  user:
-    name: serviceAccount
-    password: Tra!nme4321
+#security:
+#  user:
+#    name: serviceAccount
+#    password: Tra!nme4321
 # Database Configuration
 spring:
   datasource:
@@ -16,3 +16,4 @@ scim:
   service: wip
 logging.level.com.oktaice.scim: DEBUG
 spring.mvc.dispatch-options-request: true
+logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG

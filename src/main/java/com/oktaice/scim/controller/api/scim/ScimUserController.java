@@ -71,6 +71,8 @@ public class ScimUserController extends ScimBaseController {
     @GetMapping
     public @ResponseBody ScimListResponse getUsers(@ModelAttribute ScimPageFilter scimPageFilter) {
         //GET STARTINDEX AND COUNT FOR PAGINATION
+        logger.info("Filter: " + scimPageFilter.getFilter() + ", startIndex: " + scimPageFilter.getStartIndex() +
+                ", count: " + scimPageFilter.getCount());
         PageRequest pageRequest =
             new PageRequest(scimPageFilter.getStartIndex() - 1, scimPageFilter.getCount());
 
