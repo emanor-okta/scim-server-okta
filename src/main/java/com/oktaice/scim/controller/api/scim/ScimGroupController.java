@@ -125,6 +125,13 @@ public class ScimGroupController extends ScimBaseController {
         Group newGroup = scimService.scimGroupToGroup(scimGroup);
         ///Save new group to DB
         groupRepository.save(newGroup);
+
+//        try {
+//            Thread.sleep(60 * 1000 * 6);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         //Returns the group information and convert it to a SCIM Group
         return scimService.groupToScimGroup(newGroup);
     }

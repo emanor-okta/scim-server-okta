@@ -4,12 +4,12 @@ import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletCont
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.stereotype.Component;
 
-//@Component
-//public class ServerCustomizer implements EmbeddedServletContainerCustomizer
-//{
-//    @Override
-//    public void customize(ConfigurableEmbeddedServletContainer container)
-//    {
-//        container.setPort(8082);
-//    }
-//}
+@Component
+public class ServerCustomizer implements EmbeddedServletContainerCustomizer
+{
+    @Override
+    public void customize(ConfigurableEmbeddedServletContainer container)
+    {
+        container.setPort(8082);
+    }
+}
