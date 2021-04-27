@@ -1,4 +1,4 @@
-package com.oktaice.scim.model.scim.support;
+package com.oktaice.scim.model.scim20.support;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,16 +8,16 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.oktaice.scim.model.scim.ScimEnterpriseUser;
-import com.oktaice.scim.model.scim.ScimOktaIceUser;
-import com.oktaice.scim.model.scim.ScimUser;
+import com.oktaice.scim.model.scim20.ScimEnterpriseUser;
+import com.oktaice.scim.model.scim20.ScimOktaIceUser;
+import com.oktaice.scim.model.scim20.ScimUser;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
 
-import static com.oktaice.scim.model.scim.ScimEnterpriseUser.SCHEMA_USER_ENTERPRISE;
-import static com.oktaice.scim.model.scim.ScimOktaIceUser.SCHEMA_USER_OKTA_ICE;
-import static com.oktaice.scim.model.scim.ScimUser.SCHEMA_USER_CORE;
+import static com.oktaice.scim.model.scim20.ScimEnterpriseUser.SCHEMA_USER_ENTERPRISE;
+import static com.oktaice.scim.model.scim20.ScimOktaIceUser.SCHEMA_USER_OKTA_ICE;
+import static com.oktaice.scim.model.scim20.ScimUser.SCHEMA_USER_CORE;
 
 @JsonComponent
 public class ScimUserDeserializer extends JsonDeserializer<ScimUser> {

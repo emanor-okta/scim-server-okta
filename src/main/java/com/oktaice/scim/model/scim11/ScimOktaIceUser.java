@@ -1,22 +1,23 @@
-package com.oktaice.scim.model.scim;
+package com.oktaice.scim.model.scim11;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+//import com.oktaice.scim.model.scim11.ScimEnterpriseUser;
 
-import static com.oktaice.scim.model.scim.ScimEnterpriseUser.SCHEMA_USER_ENTERPRISE;
-import static com.oktaice.scim.model.scim.ScimOktaIceUser.SCHEMA_USER_OKTA_ICE;
+import static com.oktaice.scim.model.scim11.ScimEnterpriseUser.SCHEMA_USER_ENTERPRISE;
+import static com.oktaice.scim.model.scim11.ScimOktaIceUser.SCHEMA_USER_OKTA_ICE;
 
-@JsonPropertyOrder({ "schemas", "id", "active", "userName", "name", "emails", "groups", SCHEMA_USER_ENTERPRISE, SCHEMA_USER_OKTA_ICE, "meta" })
+@JsonPropertyOrder({ "schemas", "id", "externalId", "active", "userName", "name", "emails", "groups", SCHEMA_USER_ENTERPRISE, SCHEMA_USER_OKTA_ICE, "meta" })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ScimOktaIceUser extends ScimEnterpriseUser {
+public class ScimOktaIceUser extends com.oktaice.scim.model.scim11.ScimEnterpriseUser {
 
     /**
      *  The ScimOktaIceUser class extends ScimEnterpriseUser class.
      *  It contains the SCHEMA_USER_OKTA_ICE string to store the custom schema for ICE Research.
      */
-    public static final String SCHEMA_USER_OKTA_ICE = SCHEMA_BASE + ":extension:ice:2.0:User";
+    public static final String SCHEMA_USER_OKTA_ICE = "urn:scim:schemas:extension:ice:1.0";
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(SCHEMA_USER_OKTA_ICE)
@@ -48,12 +49,13 @@ public class ScimOktaIceUser extends ScimEnterpriseUser {
         }
     }
 
+
     public static void main(String[] args) {
 
         ScimUser scimUser = new ScimUser();
         System.out.println("scimUser schemas: " + scimUser.getSchemas());
 
-        ScimEnterpriseUser scimEnterpriseUser = new ScimEnterpriseUser();
+        com.oktaice.scim.model.scim11.ScimEnterpriseUser scimEnterpriseUser = new ScimEnterpriseUser();
         System.out.println("scimEnterpriseUser schemas: " + scimEnterpriseUser.getSchemas());
 
         ScimOktaIceUser scimOktaIceUser = new ScimOktaIceUser();

@@ -1,4 +1,4 @@
-package com.oktaice.scim.model.scim.support;
+package com.oktaice.scim.model.support;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

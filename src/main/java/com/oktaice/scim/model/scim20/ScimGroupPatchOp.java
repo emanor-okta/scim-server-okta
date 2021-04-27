@@ -1,9 +1,10 @@
-package com.oktaice.scim.model.scim;
+package com.oktaice.scim.model.scim20;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oktaice.scim.model.ScimPatchOp;
 
 import java.util.ArrayList;
 import java.util.List;

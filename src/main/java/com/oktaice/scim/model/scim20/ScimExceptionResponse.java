@@ -1,4 +1,6 @@
-package com.oktaice.scim.model.scim;
+package com.oktaice.scim.model.scim20;
+
+import com.oktaice.scim.model.ScimResource;
 
 public class ScimExceptionResponse extends ScimResource {
 

@@ -2,19 +2,19 @@ package com.oktaice.scim;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oktaice.scim.model.scim.ScimEnterpriseUser;
-import com.oktaice.scim.model.scim.ScimOktaIceUser;
-import com.oktaice.scim.model.scim.ScimResource;
-import com.oktaice.scim.model.scim.ScimUser;
+import com.oktaice.scim.model.scim20.ScimEnterpriseUser;
+import com.oktaice.scim.model.scim20.ScimOktaIceUser;
+import com.oktaice.scim.model.ScimResource;
+import com.oktaice.scim.model.scim20.ScimUser;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.oktaice.scim.model.scim.ScimOktaIceUser.SCHEMA_USER_OKTA_ICE;
-import static com.oktaice.scim.model.scim.ScimUser.SCHEMA_USER_CORE;
-import static com.oktaice.scim.model.scim.ScimEnterpriseUser.SCHEMA_USER_ENTERPRISE;
+import static com.oktaice.scim.model.scim20.ScimOktaIceUser.SCHEMA_USER_OKTA_ICE;
+import static com.oktaice.scim.model.scim20.ScimUser.SCHEMA_USER_CORE;
+import static com.oktaice.scim.model.scim20.ScimEnterpriseUser.SCHEMA_USER_ENTERPRISE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

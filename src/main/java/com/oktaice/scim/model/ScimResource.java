@@ -1,4 +1,4 @@
-package com.oktaice.scim.model.scim;
+package com.oktaice.scim.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -55,6 +55,7 @@ public class ScimResource {
     /**
      * The ScimResource class stores metadata that will be used in the SCIM User and SCIM Group schemas.
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Meta {
 
         public static final String RESOURCE_TYPE_USER = "User";

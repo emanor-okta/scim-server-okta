@@ -1,19 +1,23 @@
-package com.oktaice.scim.model.scim;
+package com.oktaice.scim.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.oktaice.scim.model.ScimResource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScimListResponse extends ScimResource {
 
+
     //The ScimListResponse class has its own SCIM schema
     public static final String SCHEMA_LIST_RESPONSE = "urn:ietf:params:scim:api:messages:2.0:ListResponse";
+    public static final String SCHEMA_LIST_RESPONSE_1 = "urn:scim:schemas:core:1.0";
 
     //The ScimListResponse class contains meta information about the search that can be used for pagination.
     private Integer totalResults;
     private Integer startIndex;
     private Integer itemsPerPage;
+
 
     /**
      * The ScimListResponse serves as a wrapper for multiple SCIM Recourses.
@@ -24,6 +28,10 @@ public class ScimListResponse extends ScimResource {
 
     public ScimListResponse() {
         getSchemas().add(SCHEMA_LIST_RESPONSE);
+    }
+
+    public ScimListResponse(boolean isV2) {
+        getSchemas().add(isV2 ? SCHEMA_LIST_RESPONSE : SCHEMA_LIST_RESPONSE_1);
     }
 
     public Integer getTotalResults() {
@@ -57,4 +65,6 @@ public class ScimListResponse extends ScimResource {
     public void setResources(List<ScimResource> resources) {
         this.resources = resources;
     }
+
+
 }

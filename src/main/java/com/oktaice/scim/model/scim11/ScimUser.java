@@ -1,4 +1,6 @@
-package com.oktaice.scim.model.scim;
+package com.oktaice.scim.model.scim11;
+
+import com.oktaice.scim.model.ScimResource;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -6,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonPropertyOrder({ "schemas", "id", "active", "userName", "name", "emails", "groups", "meta" })
+@JsonPropertyOrder({ "schemas", "id", "externalId", "active", "userName", "name", "emails", "groups", "meta" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ScimUser extends ScimResource {
 
@@ -14,8 +16,9 @@ public class ScimUser extends ScimResource {
      * The ScimUser class extends ScimResource class.
      * It contains the SCHEMA_USER_CORE string to store the Core Schema.
      */
-    public static final String SCHEMA_USER_CORE = SCHEMA_BASE + ":core:2.0:User";
+    public static final String SCHEMA_USER_CORE = "urn:scim:schemas:core:1.0";
 
+    private String externalId;
     private boolean active;
     private String userName;
     private Name name;
@@ -25,6 +28,14 @@ public class ScimUser extends ScimResource {
     public ScimUser() {
         super();
         getSchemas().add(SCHEMA_USER_CORE);
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
     public boolean isActive() {

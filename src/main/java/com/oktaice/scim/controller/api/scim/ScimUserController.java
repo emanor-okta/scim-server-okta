@@ -1,11 +1,8 @@
 package com.oktaice.scim.controller.api.scim;
 
 import com.oktaice.scim.model.Group;
-import com.oktaice.scim.model.scim.ScimListResponse;
-import com.oktaice.scim.model.scim.ScimOktaIceUser;
-import com.oktaice.scim.model.scim.support.ScimPageFilter;
-import com.oktaice.scim.model.scim.ScimUser;
-import com.oktaice.scim.model.scim.ScimUserPatchOp;
+import com.oktaice.scim.model.ScimListResponse;
+import com.oktaice.scim.model.support.ScimPageFilter;
 import com.oktaice.scim.model.User;
 import com.oktaice.scim.repository.UserRepository;
 import com.oktaice.scim.service.ScimService;
@@ -19,26 +16,21 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static com.oktaice.scim.service.ScimService.USERS_LOCATION_BASE;
-
 @RestController
 @ConditionalOnProperty(name = "scim.service", havingValue = "wip")
-@RequestMapping(USERS_LOCATION_BASE)
-public class ScimUserController extends ScimBaseController {
+@RequestMapping({"/scim/v1/Users", "/scim/v2/Users"})
+public class ScimUserController extends ScimBaseHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(ScimUserController.class);
 
@@ -51,28 +43,14 @@ public class ScimUserController extends ScimBaseController {
         logger.info("Using ScimUserController...");
     }
 
-    /**
-     * TODO: Implement the getUser method
-     */
-    @GetMapping("/{uuid}")
-    public @ResponseBody ScimOktaIceUser getUser(@PathVariable String uuid) {
-        //This is the line to delete
-//        return new ScimOktaIceUser();
-        //Searches a Repository User by its uuid
-        User user = userRepository.findOneByUuid(uuid);
 
-        //Returns the Repository User and convert it to a SCIM User.
-        if (user == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
-        return scimService.userToScimOktaIceUser(user);
-    }
-
-    @GetMapping
-    public @ResponseBody ScimListResponse getUsers(@ModelAttribute ScimPageFilter scimPageFilter) {
+    @GetMapping()
+    public @ResponseBody ScimListResponse getUsers(@ModelAttribute ScimPageFilter scimPageFilter,
+                                                   HttpServletRequest request) {
+        boolean isV2 = request.getRequestURI().contains("v2");
         //GET STARTINDEX AND COUNT FOR PAGINATION
         logger.info("Filter: " + scimPageFilter.getFilter() + ", startIndex: " + scimPageFilter.getStartIndex() +
-                ", count: " + scimPageFilter.getCount());
+                ", count: " + scimPageFilter.getCount() + ", version: " + (isV2 ? "v2" : "v1"));
         PageRequest pageRequest =
             new PageRequest(scimPageFilter.getStartIndex() - 1, scimPageFilter.getCount());
 
@@ -111,103 +89,10 @@ public class ScimUserController extends ScimBaseController {
         //Get a list of Repository Users from search and convert to a SCIM List Response
         List<User> foundUsers = users.getContent();
         return scimService.usersToListResponse(
-                foundUsers, scimPageFilter.getStartIndex(), scimPageFilter.getCount()
+                foundUsers, scimPageFilter.getStartIndex(), scimPageFilter.getCount(), isV2
         );
     }
 
-    /**
-     * TODO: Implement the createUser method
-     */
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody ScimUser createUser(@RequestBody ScimUser scimUser) {
-        //This is the line to delete
-//        return new ScimOktaIceUser();
-        //Get new user's information
-        User newUser = scimService.scimUserToUser(scimUser);
-        //Save new user to DB
-        userRepository.save(newUser);
-        //Returns the user information and convert it to a SCIM User
-        return scimService.userToScimOktaIceUser(newUser);
-    }
-
-    /**
-     * TODO: Implement the replaceUser method
-     */
-    @PutMapping("/{uuid}")
-    public @ResponseBody ScimOktaIceUser replaceUser(@RequestBody ScimUser scimUser, @PathVariable String uuid) {
-        //This is the line to delete
-//        return new ScimOktaIceUser();
-
-        //Finds the Repository User by uuid
-        User user = userRepository.findOneByUuid(uuid);
-        if (user == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
-
-        //Convert the SCIM User to a Repository User format if an existing Repository User can be found.
-        User userWithUpdates = scimService.scimUserToUser(scimUser);
-        //Copy attribute values from userWithUpdates to the existing Repository User
-        copyUser(userWithUpdates, user);
-        //Save the updated value to DB
-        userRepository.save(user);
-        //Return the updated user information and convert it to a SCIM User
-        return scimService.userToScimOktaIceUser(user);
-    }
-
-    /**
-     * The copyUser method takes in two Repository Users.
-     * It copy information from the first Repository User (from) to the second Repository User (to)
-     */
-    private void copyUser(User from, User to) {
-        Assert.notNull(from, "From User cannot be null");
-        Assert.notNull(to, "To User cannot be null");
-
-        to.setActive(from.getActive());
-        to.setUserName(from.getUserName());
-
-        to.setEmail(from.getEmail());
-
-        to.setLastName(from.getLastName());
-        to.setMiddleName(from.getMiddleName());
-        to.setFirstName(from.getFirstName());
-
-        to.setCostCenter(from.getCostCenter());
-        to.setEmployeeNumber(from.getEmployeeNumber());
-
-        to.setFavoriteIceCream(from.getFavoriteIceCream());
-    }
-
-    /**
-     * TODO: Implement the updateUser method
-     */
-    @SuppressWarnings("unchecked")
-    @PatchMapping("/{uuid}")
-    public @ResponseBody ScimOktaIceUser updateUser(
-        @RequestBody ScimUserPatchOp scimUserPatchOp, @PathVariable String uuid
-    ) {
-        //This is the line to delete
-//        return new ScimOktaIceUser();
-
-        //Confirm that the ScimUserPatchOp is valid.
-        scimService.validateUserPatchOp(scimUserPatchOp);
-        //Finds the Repository User by uuid
-        User user = userRepository.findOneByUuid(uuid);
-        //If cannot find the user, returns "Resource not found" error message.
-        if (user == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
-
-        // Do Patch Op (only active flag supported currently)
-        boolean activeReplace = scimUserPatchOp.getOperations().get(0).getValue().getActive();
-        if (activeReplace != user.getActive()) {
-            user.setActive(activeReplace);
-            userRepository.save(user);
-        }
-
-        //Return the updated user information and convert it to a SCIM User
-        return scimService.userToScimOktaIceUser(user);
-    }
 
     /**
      * TODO: Review the deleteUser method
@@ -215,10 +100,7 @@ public class ScimUserController extends ScimBaseController {
     @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String uuid) {
-        User user = userRepository.findOneByUuid(uuid);
-        if (user == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
+        User user = findUserByUUID(uuid, userRepository);
 
         //remove user from groups
         for (Group g : user.getGroups()) {
